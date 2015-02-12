@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>bru's blog</title>
+	<meta name="description" content="">
+	<meta name="author" content="Bruno Cauet">
+
+	<!-- HTML5 shim, for IE6-8 support of HTML elements -->
+	<!--[if lt IE 9]>
+		<script src="http://blog.frite-camembert.net/theme/html5.js"></script>
+	<![endif]-->
+
+	<!-- Styles -->
+	<link href="http://blog.frite-camembert.net/theme/bootstrap.min.css" rel="stylesheet">
+	<link href="http://blog.frite-camembert.net/theme/local.css" rel="stylesheet">
+	<link href="http://blog.frite-camembert.net/theme/pygments.css" rel="stylesheet">
+
+	<!-- Feeds -->
+	<link href="http://blog.frite-camembert.net/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="bru's blog Atom Feed" />
+
+
+
+
+</head>
+<body>
+	<div class="topbar">
+	  <div class="topbar-inner">
+		<div class="container-fluid">
+		  <a class="brand" href="http://blog.frite-camembert.net/">bru's blog</a>
+			<ul class="nav">
+					<li ><a href="http://blog.frite-camembert.net/category/python.html">Python</a></li>
+					<li class="active"><a href="http://blog.frite-camembert.net/category/riddle.html">Riddle</a></li>
+			</ul>
+			<p class="pull-right"><a href="http://blog.frite-camembert.net/archives.html">[archives]</a> <a href="http://blog.frite-camembert.net/tags.html">[tags]</a></p>
+		</div>
+	  </div>
+	</div>
+
+	<div class="container-fluid">
+	  <div class="sidebar">
+		<div class="well">
+			<h3>Blogroll</h3>
+			<ul>
+			</ul>
+			<div class="social">
+			<h3>Social</h3>
+			<ul>
+				<li><a href="https://github.com/brunal">(sparse) github</a></li>
+				<li><a href="https://www.facebook.com/bcauet">facebook</a></li>
+			</ul>
+			</div>
+		</div>
+	  </div>
+	  <div class="content">
+	<div class='article'>
+		<div class="page-header"><h1>Devil Chess: a simpler & more general solution</h1></div>
+		<div class="well small">Permalink: <a class="more" href="http://blog.frite-camembert.net/devil-chess.html">2015-02-12 00:00:00+01:00</a>
+by <a class="url fn" href="http://blog.frite-camembert.net/author/bruno-cauet.html">Bruno Cauet </a>
+ in <a href="http://blog.frite-camembert.net/category/riddle.html">Riddle</a>
+tags: <a href="http://blog.frite-camembert.net/tag/math.html">math</a> <a href="http://blog.frite-camembert.net/tag/riddle.html">riddle</a> </div>
+		<div><p>The Devil Chess riddle was recently a hot topic with the
+<a href="http://datagenetics.com/blog/december12014/index.html">datagenetics.com</a> blog
+post presenting the problem and a solution. We discussed it
+among friends and found solution, which we believe is simpler for it is does
+not use strange board partitions.</p>
+<h2>The Problem</h2>
+<p>Shamelessly stolen from the aforementioned blog post. If you read it just skip
+to the next part.</p>
+<p>It's one of those proverbial prisoner problems where you are condemned to die
+unless you can prove your intelligence to a devious jailer. You, and your
+friend, are incarcerated. Your jailer offers a challenge. If you complete the
+challenge you are both free to go. Here are the rules:</p>
+<ul>
+<li>The jailer will take you into a private cell. In the cell will be a chessboard
+  and a jar containing 64 coins.</li>
+<li>The jailer will take the coins, one-by-one, and place a coin on each square on
+  the board. He will place the coins randomly on the board. Some coins will be
+  heads, and some tails (or maybe they will be all heads, or all tails; you have
+  no idea. It's all at the jailers whim. He may elect to look and choose to make
+  a pattern himself, he may toss them placing them the way they land, he might
+  look at them as he places them, he might not …). If you attempt to interfere
+  with the placing of the coins, it is instant death for you. If you attempt to
+  coerce, suggest, or persuade the jailer in any way, instant death. All you can
+  do it watch.</li>
+<li>Once all the coins have been laid out, the jailer will point to one of the
+  squares on the board and say: “This one!” He is indicating the magic square.
+  This square is the key to your freedom.</li>
+<li>The jailer will then allow you to turn over one coin on the board. Just one. A
+  single coin, but it can be any coin, you have full choice. If the coin you
+  select is a head, it will flip to a tail. If it is a tail it will flip to a
+  head. This is the only change you are allowed to make to the jailers initial
+  layout.</li>
+<li>You will then be lead out of the room. If you attempt to leave other messages
+  behind, or clues for your friend … yes, you guessed it, instant death!</li>
+<li>The jailer will then bring your friend into the room.</li>
+<li>Your friend will look at the board (no touching allowed), then examine the
+  board of coins and decide which location he thinks is the magic square.</li>
+<li>He gets one chance only (no feedback). Based on the configuration of the coins
+  he will point to one square and say: “This one!”</li>
+<li>If he guesses correctly, you are both pardoned, and instantly set free. If he
+  guesses incorrectly, you are both executed.</li>
+<li>The jailer explains all these rules, to both you and your friend, beforehand
+  and then gives you time to confer with each other to devise a strategy for
+  which coin to flip.</li>
+</ul>
+<h2>Our solution</h2>
+<p>Now for some notations:</p>
+<ul>
+<li><code>T</code> is the initial set of squares with tails on them. We'll only work with
+them and not heads ones (yes it's arbitrary).</li>
+<li><code>T'</code> is that same set after flipping one coin.</li>
+<li><code>tx</code> is the column index (0 to 7) of a square <code>t</code> belonging to <code>T</code> (or <code>T'</code>).</li>
+<li><code>ty</code> is its row index.</li>
+<li><code>m = (mx, my)</code> is the magic square.</li>
+<li><code>f = (fx, fy)</code> is the square under the coin we'll flip.</li>
+</ul>
+<p>We'll always use the binary representation of all those values. We're working
+on a tore (ℤ/8ℤ), i.e. every value is modulo 8, and -3 is the same as 5.</p>
+<p>And now the solution itself. For simplicity purposes we'll work independently
+on the rows and the columns.
+Let's compute</p>
+<div class="highlight"><pre>θx = ⊕(tx for t in T)
+θy = ⊕(ty for t in T)
+θ = (θx, θy)
+</pre></div>
+
+
+<p><code>θ</code> is the xor of all tails squares. We'd like <code>θ'</code> (<code>θ</code> after the
+flip) to equal <code>m</code>. How?</p>
+<p>We introduce their difference:</p>
+<div class="highlight"><pre>δ = (δx, δy)
+δ = m ⊕ θ
+δ = (mx ⊕ θx, my ⊕ θy)
+</pre></div>
+
+
+<p>The <code>δ</code> represents a square on the board! What happens when we flip it?</p>
+<p>We have <code>T' = T ⊕ {δ}</code>. Then</p>
+<div class="highlight"><pre>θ&#39;x = ⊕(tx for t in T&#39;)
+θ&#39;x = ⊕(tx for t in T) ⊕ δx
+θ&#39;x = θx ⊕ (mx ⊕ θx)
+θ&#39;x = θx ⊕ mx ⊕ θx
+θ&#39;x = mx
+</pre></div>
+
+
+<p>Same goes for <code>θ'y = m</code></p>
+<p>Therefore <code>θ' = m</code>
+Therefore <strong>by flipping the coin on the square <code>m ⊕ (⊕T)</code>, <code>⊕T'</code> gives us the
+magic square!</strong></p>
+<h2>Demo</h2>
+<p>I planned to include a demo, stealing the base code from datagenetics.com's
+blog and adapting it to this solution. However, upon reading the source, it
+appeared that the computation of the parity did not use their aforementioned
+board partitions, but the same computation I use: <code>Parity = ⊕T</code>, which gives the
+same result... We now feel a bit stupid for thinking we had another solution,
+but since the article is written we go forth.</p>
+<p>Hope you enjoyed it!</p></div>
+	</div>
+		<footer>
+		  <p>Powered by <a href="http://getpelican.com/">Pelican</a>. Theme based on <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap</a>.</p>
+		  <p>&copy; Bruno Cauet</p>
+		</footer>
+	  </div>
+
+	</div>
+</body>
+</html>

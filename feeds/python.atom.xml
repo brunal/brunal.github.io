@@ -7,7 +7,8 @@ People called for a yearly reconduction, here it is for 2014.&lt;/p&gt;
 &lt;p&gt;One can play with the dataset &lt;a href="https://www.statwing.com/open/datasets/c52709b8ae94e6814b4aa23f6b8b12bc8acb0958"&gt;on Statwing&lt;/a&gt;.
 &lt;a href="https://docs.google.com/forms/d/1DqxkNi4GvyTCu54usSdE1DjW29zw1tc52iMeH3z4heg/viewanalytics"&gt;Here&lt;/a&gt;
 is an automatic quick recap. This report will focus on year-to-year evolutions.&lt;/p&gt;
-&lt;p&gt;If you find the graphs ugly, please (help me make it better)[link-to-github-source].&lt;/p&gt;
+&lt;p&gt;If you find the graphs ugly, please &lt;a href="https://gist.github.com/brunal/88418f72fc981a4bf9c3"&gt;help me make it better&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Edit: beautiful visualizations are &lt;a href="http://www.randalolson.com/2015/01/30/python-usage-survey-2014/"&gt;this way&lt;/a&gt;.&lt;/p&gt;
 &lt;h2&gt;Results&lt;/h2&gt;
 &lt;p&gt;Overall the transition is still going, with a 10 points increase in people
 writing primarily python 3.x code. It still does not beat python 2.x on

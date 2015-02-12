@@ -1,2 +1,162 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>A Pelican Blog</title><link href="/" rel="alternate"></link><link href="/feeds/all.atom.xml" rel="self"></link><id>/</id><updated>2015-01-29T18:24:58Z</updated></feed>
+<feed xmlns="http://www.w3.org/2005/Atom"><title>bru's blog</title><link href="http://blog.frite-camembert.net/" rel="alternate"></link><link href="http://blog.frite-camembert.net/feeds/all.atom.xml" rel="self"></link><id>http://blog.frite-camembert.net/</id><updated>2015-02-12T00:00:00+01:00</updated><entry><title>Devil Chess: a simpler &amp; more general solution</title><link href="http://blog.frite-camembert.net/devil-chess.html" rel="alternate"></link><updated>2015-02-12T00:00:00+01:00</updated><author><name>Bruno Cauet</name></author><id>tag:blog.frite-camembert.net,2015-02-12:devil-chess.html</id><summary type="html">&lt;p&gt;The Devil Chess riddle was recently a hot topic with the
+&lt;a href="http://datagenetics.com/blog/december12014/index.html"&gt;datagenetics.com&lt;/a&gt; blog
+post presenting the problem and a solution. We discussed it
+among friends and found solution, which we believe is simpler for it is does
+not use strange board partitions.&lt;/p&gt;
+&lt;h2&gt;The Problem&lt;/h2&gt;
+&lt;p&gt;Shamelessly stolen from the aforementioned blog post. If you read it just skip
+to the next part.&lt;/p&gt;
+&lt;p&gt;It's one of those proverbial prisoner problems where you are condemned to die
+unless you can prove your intelligence to a devious jailer. You, and your
+friend, are incarcerated. Your jailer offers a challenge. If you complete the
+challenge you are both free to go. Here are the rules:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;The jailer will take you into a private cell. In the cell will be a chessboard
+  and a jar containing 64 coins.&lt;/li&gt;
+&lt;li&gt;The jailer will take the coins, one-by-one, and place a coin on each square on
+  the board. He will place the coins randomly on the board. Some coins will be
+  heads, and some tails (or maybe they will be all heads, or all tails; you have
+  no idea. It's all at the jailers whim. He may elect to look and choose to make
+  a pattern himself, he may toss them placing them the way they land, he might
+  look at them as he places them, he might not …). If you attempt to interfere
+  with the placing of the coins, it is instant death for you. If you attempt to
+  coerce, suggest, or persuade the jailer in any way, instant death. All you can
+  do it watch.&lt;/li&gt;
+&lt;li&gt;Once all the coins have been laid out, the jailer will point to one of the
+  squares on the board and say: “This one!” He is indicating the magic square.
+  This square is the key to your freedom.&lt;/li&gt;
+&lt;li&gt;The jailer will then allow you to turn over one coin on the board. Just one. A
+  single coin, but it can be any coin, you have full choice. If the coin you
+  select is a head, it will flip to a tail. If it is a tail it will flip to a
+  head. This is the only change you are allowed to make to the jailers initial
+  layout.&lt;/li&gt;
+&lt;li&gt;You will then be lead out of the room. If you attempt to leave other messages
+  behind, or clues for your friend … yes, you guessed it, instant death!&lt;/li&gt;
+&lt;li&gt;The jailer will then bring your friend into the room.&lt;/li&gt;
+&lt;li&gt;Your friend will look at the board (no touching allowed), then examine the
+  board of coins and decide which location he thinks is the magic square.&lt;/li&gt;
+&lt;li&gt;He gets one chance only (no feedback). Based on the configuration of the coins
+  he will point to one square and say: “This one!”&lt;/li&gt;
+&lt;li&gt;If he guesses correctly, you are both pardoned, and instantly set free. If he
+  guesses incorrectly, you are both executed.&lt;/li&gt;
+&lt;li&gt;The jailer explains all these rules, to both you and your friend, beforehand
+  and then gives you time to confer with each other to devise a strategy for
+  which coin to flip.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;Our solution&lt;/h2&gt;
+&lt;p&gt;Now for some notations:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;T&lt;/code&gt; is the initial set of squares with tails on them. We'll only work with
+them and not heads ones (yes it's arbitrary).&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;T'&lt;/code&gt; is that same set after flipping one coin.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;tx&lt;/code&gt; is the column index (0 to 7) of a square &lt;code&gt;t&lt;/code&gt; belonging to &lt;code&gt;T&lt;/code&gt; (or &lt;code&gt;T'&lt;/code&gt;).&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;ty&lt;/code&gt; is its row index.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;m = (mx, my)&lt;/code&gt; is the magic square.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;f = (fx, fy)&lt;/code&gt; is the square under the coin we'll flip.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;We'll always use the binary representation of all those values. We're working
+on a tore (ℤ/8ℤ), i.e. every value is modulo 8, and -3 is the same as 5.&lt;/p&gt;
+&lt;p&gt;And now the solution itself. For simplicity purposes we'll work independently
+on the rows and the columns.
+Let's compute&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;θx = ⊕(tx for t in T)
+θy = ⊕(ty for t in T)
+θ = (θx, θy)
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;&lt;code&gt;θ&lt;/code&gt; is the xor of all tails squares. We'd like &lt;code&gt;θ'&lt;/code&gt; (&lt;code&gt;θ&lt;/code&gt; after the
+flip) to equal &lt;code&gt;m&lt;/code&gt;. How?&lt;/p&gt;
+&lt;p&gt;We introduce their difference:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;δ = (δx, δy)
+δ = m ⊕ θ
+δ = (mx ⊕ θx, my ⊕ θy)
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;The &lt;code&gt;δ&lt;/code&gt; represents a square on the board! What happens when we flip it?&lt;/p&gt;
+&lt;p&gt;We have &lt;code&gt;T' = T ⊕ {δ}&lt;/code&gt;. Then&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;θ&amp;#39;x = ⊕(tx for t in T&amp;#39;)
+θ&amp;#39;x = ⊕(tx for t in T) ⊕ δx
+θ&amp;#39;x = θx ⊕ (mx ⊕ θx)
+θ&amp;#39;x = θx ⊕ mx ⊕ θx
+θ&amp;#39;x = mx
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Same goes for &lt;code&gt;θ'y = m&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;Therefore &lt;code&gt;θ' = m&lt;/code&gt;
+Therefore &lt;strong&gt;by flipping the coin on the square &lt;code&gt;m ⊕ (⊕T)&lt;/code&gt;, &lt;code&gt;⊕T'&lt;/code&gt; gives us the
+magic square!&lt;/strong&gt;&lt;/p&gt;
+&lt;h2&gt;Demo&lt;/h2&gt;
+&lt;p&gt;I planned to include a demo, stealing the base code from datagenetics.com's
+blog and adapting it to this solution. However, upon reading the source, it
+appeared that the computation of the parity did not use their aforementioned
+board partitions, but the same computation I use: &lt;code&gt;Parity = ⊕T&lt;/code&gt;, which gives the
+same result... We now feel a bit stupid for thinking we had another solution,
+but since the article is written we go forth.&lt;/p&gt;
+&lt;p&gt;Hope you enjoyed it!&lt;/p&gt;</summary><category term="math"></category><category term="riddle"></category></entry><entry><title>Python 2.x vs 3.x usage survey, 2014 edition</title><link href="http://blog.frite-camembert.net/python-survey-2014.html" rel="alternate"></link><updated>2015-01-26T00:00:00+01:00</updated><author><name>Bruno Cauet</name></author><id>tag:blog.frite-camembert.net,2015-01-26:python-survey-2014.html</id><summary type="html">&lt;p&gt;A survey on the topic got conducted last year by &lt;a href="http://strombrg.blogspot.com/"&gt;Dan Stromberg&lt;/a&gt;.
+&lt;a href="https://wiki.python.org/moin/2.x-vs-3.x-survey"&gt;Here&lt;/a&gt; are the results (&lt;a href="https://wiki.python.org/moin/2.x-vs-3.x-survey?action=AttachFile&amp;amp;do=get&amp;amp;target=2013-2014+Python+2.x-3.x+survey.pdf"&gt;direct
+link to pdf&lt;/a&gt;).
+People called for a yearly reconduction, here it is for 2014.&lt;/p&gt;
+&lt;p&gt;There were 6746 respondents, up from 4790 last year.&lt;/p&gt;
+&lt;p&gt;One can play with the dataset &lt;a href="https://www.statwing.com/open/datasets/c52709b8ae94e6814b4aa23f6b8b12bc8acb0958"&gt;on Statwing&lt;/a&gt;.
+&lt;a href="https://docs.google.com/forms/d/1DqxkNi4GvyTCu54usSdE1DjW29zw1tc52iMeH3z4heg/viewanalytics"&gt;Here&lt;/a&gt;
+is an automatic quick recap. This report will focus on year-to-year evolutions.&lt;/p&gt;
+&lt;p&gt;If you find the graphs ugly, please &lt;a href="https://gist.github.com/brunal/88418f72fc981a4bf9c3"&gt;help me make it better&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Edit: beautiful visualizations are &lt;a href="http://www.randalolson.com/2015/01/30/python-usage-survey-2014/"&gt;this way&lt;/a&gt;.&lt;/p&gt;
+&lt;h2&gt;Results&lt;/h2&gt;
+&lt;p&gt;Overall the transition is still going, with a 10 points increase in people
+writing primarily python 3.x code. It still does not beat python 2.x on
+personal projects.&lt;/p&gt;
+&lt;h3&gt;Have you ever written code in Python 2.x?&lt;/h3&gt;
+&lt;p&gt;&lt;img alt="nearly everyone" src="http://blog.frite-camembert.net/images/python-survey/written_python2.png" /&gt;&lt;/p&gt;
+&lt;h3&gt;Have you ever written code in Python 3.x?&lt;/h3&gt;
+&lt;p&gt;&lt;img alt="+15 points, now more than 75%" src="http://blog.frite-camembert.net/images/python-survey/written_python3.png" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;This&lt;/em&gt; is great! At that rate by 2017 everybody will have written some python
+3...&lt;/p&gt;
+&lt;h3&gt;Do you currently write more code in Python 2.x or Python 3.x?&lt;/h3&gt;
+&lt;p&gt;&lt;img alt="1/3 of python 3" src="http://blog.frite-camembert.net/images/python-survey/more_python2_or_python3.png" /&gt;&lt;/p&gt;
+&lt;p&gt;+10 points is great. It if were linear it'd mean we're only halfway through but
+I'd rather think we're close to a tipping point.&lt;/p&gt;
+&lt;h3&gt;When starting a personal project, which Python version do you use?&lt;/h3&gt;
+&lt;p&gt;&lt;img alt="close win for python 2" src="http://blog.frite-camembert.net/images/python-survey/personal_choice.png" /&gt;&lt;/p&gt;
+&lt;p&gt;Python 2 is still winning, maybe for the last year?&lt;/p&gt;
+&lt;h3&gt;Which Python versions do you regularly use?&lt;/h3&gt;
+&lt;p&gt;&lt;img alt="2.7 and 3.4, duh" src="http://blog.frite-camembert.net/images/python-survey/versions.png" /&gt;&lt;/p&gt;
+&lt;p&gt;I feel for the ones stuck on 2.5. Hey look, 3 is a real language for sure: it
+is accumulating bagage, with nearly 200 respondents regularly using python 3.2!&lt;/p&gt;
+&lt;h3&gt;Do you think Python 3.x was a mistake?&lt;/h3&gt;
+&lt;p&gt;&lt;img alt="nope" src="http://blog.frite-camembert.net/images/python-survey/python3_mistake.png" /&gt;&lt;/p&gt;
+&lt;p&gt;The evolution here is a bit hard to explain, for the new option "No, but a
+more gradual transition would have been better" has probably taken votes from
+both "Yes" and "No".&lt;/p&gt;
+&lt;h3&gt;Have you ever ported code from Python 2.x to Python 3.x?&lt;/h3&gt;
+&lt;p&gt;&lt;img alt="nearly 40%, small increase" src="http://blog.frite-camembert.net/images/python-survey/ported_2_to_3.png" /&gt;&lt;/p&gt;
+&lt;p&gt;I was expecting a bigger increase, given the greenification of the &lt;a href="https://python3wos.appspot.com/"&gt;Wall of
+Superpowers&lt;/a&gt;. Does that mean it's (globally)
+always the same ones who port the code?&lt;/p&gt;
+&lt;h3&gt;Have you ever written/ported code using 2to3?&lt;/h3&gt;
+&lt;p&gt;&lt;img alt="nope" src="http://blog.frite-camembert.net/images/python-survey/used_2to3.png" /&gt;&lt;/p&gt;
+&lt;h3&gt;Have you ever written/ported code using 3to2?&lt;/h3&gt;
+&lt;p&gt;&lt;img alt="noone" src="http://blog.frite-camembert.net/images/python-survey/used_3to2.png" /&gt;&lt;/p&gt;
+&lt;h3&gt;Have you ever written/ported code to run on Python 2.x and Python 3.x unmodified?&lt;/h3&gt;
+&lt;p&gt;&lt;img alt="30%, stable" src="http://blog.frite-camembert.net/images/python-survey/polyglot.png" /&gt;&lt;/p&gt;
+&lt;p&gt;I was expecting this figure to be higher. Sound like apart big libraries, few
+are those who bother with that path.&lt;/p&gt;
+&lt;h3&gt;If applicable, what keeps you from leaving python 2 for python 3?&lt;/h3&gt;
+&lt;p&gt;&lt;img alt="dependencies is #1" src="http://blog.frite-camembert.net/images/python-survey/blocking.png" /&gt;&lt;/p&gt;
+&lt;p&gt;Other responses include:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;distro still based on python 2 (RHEL, Debian, Ubuntu, OS X): 44&lt;/li&gt;
+&lt;li&gt;unicode: 30 (both "I don't like it in py3" and "we handle it poorly with&lt;/li&gt;
+&lt;li&gt;Google App Engine only supports python 2: 25&lt;/li&gt;
+&lt;li&gt;hating on print(): 23
+python 3, transition causes too many problems" meanings)&lt;/li&gt;
+&lt;li&gt;lazyness: 13 (I believe it in the sense of "I am lazy", not "map &amp;amp; co. being
+lazy")&lt;/li&gt;
+&lt;li&gt;performance: 11&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;This is it! Until next year.
+Feel free to note any question that's is missing in your opinion.&lt;/p&gt;</summary><category term="python"></category><category term="survey"></category><category term="python 2"></category><category term="python 3"></category></entry></feed>
