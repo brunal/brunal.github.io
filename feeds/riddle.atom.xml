@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>bru's blog</title><link href="http://blog.frite-camembert.net/" rel="alternate"></link><link href="http://blog.frite-camembert.net/feeds/riddle.atom.xml" rel="self"></link><id>http://blog.frite-camembert.net/</id><updated>2015-02-12T00:00:00+01:00</updated><entry><title>Devil Chess: a simpler &amp; more general solution</title><link href="http://blog.frite-camembert.net/devil-chess.html" rel="alternate"></link><updated>2015-02-12T00:00:00+01:00</updated><author><name>Bruno Cauet</name></author><id>tag:blog.frite-camembert.net,2015-02-12:devil-chess.html</id><summary type="html">&lt;p&gt;The Devil Chess riddle was recently a hot topic with the
-&lt;a href="http://datagenetics.com/blog/december12014/index.html"&gt;datagenetics.com&lt;/a&gt; blog
-post presenting the problem and a solution. We discussed it
-among friends and found solution, which we believe is simpler for it is does
-not use strange board partitions.&lt;/p&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>bru's blog</title><link href="http://blog.frite-camembert.net/" rel="alternate"></link><link href="http://blog.frite-camembert.net/feeds/riddle.atom.xml" rel="self"></link><id>http://blog.frite-camembert.net/</id><updated>2015-02-12T00:00:00+01:00</updated><entry><title>Devil Chess: a simple solution</title><link href="http://blog.frite-camembert.net/devil-chess.html" rel="alternate"></link><updated>2015-02-12T00:00:00+01:00</updated><author><name>Bruno Cauet</name></author><id>tag:blog.frite-camembert.net,2015-02-12:devil-chess.html</id><summary type="html">&lt;p&gt;The Devil Chess riddle was recently a hot topic with the &lt;a href="http://datagenetics.com/blog/december12014/index.html"&gt;datagenetics.com blog
+post&lt;/a&gt; presenting the
+problem and a solution. We discussed it among friends and found solution, which
+we believe is simpler for it is does not use strange board partitions.&lt;/p&gt;
 &lt;h2&gt;The Problem&lt;/h2&gt;
 &lt;p&gt;Shamelessly stolen from the aforementioned blog post. If you read it just skip
 to the next part.&lt;/p&gt;
