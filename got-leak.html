@@ -63,26 +63,26 @@ by <a class="url fn" href="http://blog.frite-camembert.net/author/bruno-cauet.ht
 tags: <a href="http://blog.frite-camembert.net/tag/game-of-thrones.html">game of thrones</a> <a href="http://blog.frite-camembert.net/tag/encoding.html">encoding</a> </div>
 		<div><p><a href="http://torrentfreak.com/first-episodes-of-game-of-thrones-season-5-leak-online-150412/">The first four episodes of game of thrones
 leaked</a>
-nearly 36 hours ago. They've extensively downloaded, and the only tracking HBO
+nearly 36 hours ago. They have been extensively downloaded, and the only tracking set up HBO
 seemed to be a watermark in the bottom left corner of the screen. Once blurred,
 it is useless. This impresses me. It's 2015 and all you're using is a "confirm
 you're deleted" + "your copy is watermarked" for protection? There are simple
 schemes that would have allowed HBO to track the leak.</p>
 <p>The idea is very simple: make each copy unique in a non-visible way.</p>
 <h2>Credits length</h2>
-<p>A first approach would be to change the length of the credits: its basic
-duration seems to be <span class="math">\(t = 88\)</span> seconds. If you must provide <span class="math">\(n\)</span> copies (<span class="math">\(n\)</span> odd)
-then distribute copies with
+<p>A first approach would be to change the length of the credits: its duration 
+for the first episode is <span class="math">\(t = 88\)</span> seconds. If you must provide <span class="math">\(n\)</span> copies
+(<span class="math">\(n\)</span> odd) then distribute copies with a credits length of <span class="math">\(t'\)</span>,
 </p>
 <div class="math">$$t - \frac{n}{2000} &lt; t' &lt; t + \frac{n}{2000}$$</div>
 <p>
 Every copy has credits with a different length: they are a few milliseconds
 shorter or longer than they should be, and by analyzing the file one can know
-for whom it was intended.
-This is obviously easy to defeat: just clip the credits. But it is a first step
+for whom it was intended.</p>
+<p>This is obviously easy to defeat: just clip the credits. But it is a first step
 in the right direction.</p>
 <h2>Scenes length</h2>
-<p>Next iteration would be to change the length of each scene by a few
+<p>Next iteration would be changing the length of each scene by a few
 milliseconds. One can count that the first episode holds <span class="math">\(s = 18\)</span> scenes. Each
 scene lasts several minutes. Once again each copy can be made shorter or longer
 by a couple milliseconds, providing a unique fingerprint for each version sent.</p>
@@ -140,17 +140,18 @@ from <span class="math">\(s\)</span> and <span class="math">\(n\)</span>.
 In our case it gives <span class="math">\(k = XXX\)</span>. Still really low.
 --></p>
 <h2>Further considerations</h2>
-<p>There is still one way to blur that watermarking scheme: when the leaker has 2
-copies. He can then notice the discrepancies in scenes length. He may decide to
-- average each scene length. There are scene-length encoding schemes that make
+<p>There is still one way to defeat that watermarking scheme: when the leaker has 2
+copies. She can then notice the discrepancies in scenes length. She may decide to</p>
+<ul>
+<li>average each scene length. There are scene-length encoding schemes that make
 the average of every 2 sequences unique (left as an exercice to the reader ☺)
 and therefore solve this. Same with 3 copies, or 4 copies... but the encoding
-requires a <span class="math">\(k\)</span> always higher.
-- take the min or max of every scene. <a href="http://en.wikipedia.org/wiki/Error_detection_and_correction#Error-correcting_code">Error-correcting codes</a>
-should help.
-- randomly clip every scene.</p>
-<p>The case of a leaker getting her hands on 2 copies is however really less
-likely.</p>
+requires a <span class="math">\(k\)</span> always higher.</li>
+<li>take the min or max of every scene. <a href="http://en.wikipedia.org/wiki/Error_detection_and_correction#Error-correcting_code">Error-correcting codes</a>
+should help.</li>
+<li>randomly clip every scene.</li>
+</ul>
+<p>The case of a leaker getting her hands on 2 copies is however highly unlikely.</p>
 <p>This makes the afore-presented watermarking scheme resistant while simple to
 implement.</p>
 <p>Apart from that I think that binge-watching the first 4 episodes is a stupid

@@ -1,26 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom"><title>bru's blog</title><link href="http://blog.frite-camembert.net/" rel="alternate"></link><link href="http://blog.frite-camembert.net/feeds/all.atom.xml" rel="self"></link><id>http://blog.frite-camembert.net/</id><updated>2015-04-13T00:00:00+02:00</updated><entry><title>Game of Thrones leak and watermark: a stupid tracking system</title><link href="http://blog.frite-camembert.net/got-leak.html" rel="alternate"></link><updated>2015-04-13T00:00:00+02:00</updated><author><name>Bruno Cauet</name></author><id>tag:blog.frite-camembert.net,2015-04-13:got-leak.html</id><summary type="html">&lt;p&gt;&lt;a href="http://torrentfreak.com/first-episodes-of-game-of-thrones-season-5-leak-online-150412/"&gt;The first four episodes of game of thrones
 leaked&lt;/a&gt;
-nearly 36 hours ago. They've extensively downloaded, and the only tracking HBO
+nearly 36 hours ago. They have been extensively downloaded, and the only tracking set up HBO
 seemed to be a watermark in the bottom left corner of the screen. Once blurred,
 it is useless. This impresses me. It's 2015 and all you're using is a "confirm
 you're deleted" + "your copy is watermarked" for protection? There are simple
 schemes that would have allowed HBO to track the leak.&lt;/p&gt;
 &lt;p&gt;The idea is very simple: make each copy unique in a non-visible way.&lt;/p&gt;
 &lt;h2&gt;Credits length&lt;/h2&gt;
-&lt;p&gt;A first approach would be to change the length of the credits: its basic
-duration seems to be &lt;span class="math"&gt;\(t = 88\)&lt;/span&gt; seconds. If you must provide &lt;span class="math"&gt;\(n\)&lt;/span&gt; copies (&lt;span class="math"&gt;\(n\)&lt;/span&gt; odd)
-then distribute copies with
+&lt;p&gt;A first approach would be to change the length of the credits: its duration 
+for the first episode is &lt;span class="math"&gt;\(t = 88\)&lt;/span&gt; seconds. If you must provide &lt;span class="math"&gt;\(n\)&lt;/span&gt; copies
+(&lt;span class="math"&gt;\(n\)&lt;/span&gt; odd) then distribute copies with a credits length of &lt;span class="math"&gt;\(t'\)&lt;/span&gt;,
 &lt;/p&gt;
 &lt;div class="math"&gt;$$t - \frac{n}{2000} &amp;lt; t' &amp;lt; t + \frac{n}{2000}$$&lt;/div&gt;
 &lt;p&gt;
 Every copy has credits with a different length: they are a few milliseconds
 shorter or longer than they should be, and by analyzing the file one can know
-for whom it was intended.
-This is obviously easy to defeat: just clip the credits. But it is a first step
+for whom it was intended.&lt;/p&gt;
+&lt;p&gt;This is obviously easy to defeat: just clip the credits. But it is a first step
 in the right direction.&lt;/p&gt;
 &lt;h2&gt;Scenes length&lt;/h2&gt;
-&lt;p&gt;Next iteration would be to change the length of each scene by a few
+&lt;p&gt;Next iteration would be changing the length of each scene by a few
 milliseconds. One can count that the first episode holds &lt;span class="math"&gt;\(s = 18\)&lt;/span&gt; scenes. Each
 scene lasts several minutes. Once again each copy can be made shorter or longer
 by a couple milliseconds, providing a unique fingerprint for each version sent.&lt;/p&gt;
@@ -78,17 +78,18 @@ from &lt;span class="math"&gt;\(s\)&lt;/span&gt; and &lt;span class="math"&gt;\(
 In our case it gives &lt;span class="math"&gt;\(k = XXX\)&lt;/span&gt;. Still really low.
 --&gt;&lt;/p&gt;
 &lt;h2&gt;Further considerations&lt;/h2&gt;
-&lt;p&gt;There is still one way to blur that watermarking scheme: when the leaker has 2
-copies. He can then notice the discrepancies in scenes length. He may decide to
-- average each scene length. There are scene-length encoding schemes that make
+&lt;p&gt;There is still one way to defeat that watermarking scheme: when the leaker has 2
+copies. She can then notice the discrepancies in scenes length. She may decide to&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;average each scene length. There are scene-length encoding schemes that make
 the average of every 2 sequences unique (left as an exercice to the reader ☺)
 and therefore solve this. Same with 3 copies, or 4 copies... but the encoding
-requires a &lt;span class="math"&gt;\(k\)&lt;/span&gt; always higher.
-- take the min or max of every scene. &lt;a href="http://en.wikipedia.org/wiki/Error_detection_and_correction#Error-correcting_code"&gt;Error-correcting codes&lt;/a&gt;
-should help.
-- randomly clip every scene.&lt;/p&gt;
-&lt;p&gt;The case of a leaker getting her hands on 2 copies is however really less
-likely.&lt;/p&gt;
+requires a &lt;span class="math"&gt;\(k\)&lt;/span&gt; always higher.&lt;/li&gt;
+&lt;li&gt;take the min or max of every scene. &lt;a href="http://en.wikipedia.org/wiki/Error_detection_and_correction#Error-correcting_code"&gt;Error-correcting codes&lt;/a&gt;
+should help.&lt;/li&gt;
+&lt;li&gt;randomly clip every scene.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;The case of a leaker getting her hands on 2 copies is however highly unlikely.&lt;/p&gt;
 &lt;p&gt;This makes the afore-presented watermarking scheme resistant while simple to
 implement.&lt;/p&gt;
 &lt;p&gt;Apart from that I think that binge-watching the first 4 episodes is a stupid
