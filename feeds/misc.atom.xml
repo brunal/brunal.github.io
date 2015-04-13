@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"><title>bru's blog</title><link href="http://blog.frite-camembert.net/" rel="alternate"></link><link href="http://blog.frite-camembert.net/feeds/misc.atom.xml" rel="self"></link><id>http://blog.frite-camembert.net/</id><updated>2015-04-13T00:00:00+02:00</updated><entry><title>Game of Thrones leak and watermark: a stupid tracking system</title><link href="http://blog.frite-camembert.net/got-leak.html" rel="alternate"></link><updated>2015-04-13T00:00:00+02:00</updated><author><name>Bruno Cauet</name></author><id>tag:blog.frite-camembert.net,2015-04-13:got-leak.html</id><summary type="html">&lt;p&gt;&lt;a href="http://torrentfreak.com/first-episodes-of-game-of-thrones-season-5-leak-online-150412/"&gt;The first four episodes of game of thrones
+leaked&lt;/a&gt;
+nearly 36 hours ago. They've extensively downloaded, and the only tracking HBO
+seemed to be a watermark in the bottom left corner of the screen. Once blurred,
+it is useless. This impresses me. It's 2015 and all you're using is a "confirm
+you're deleted" + "your copy is watermarked" for protection? There are simple
+schemes that would have allowed HBO to track the leak.&lt;/p&gt;
+&lt;p&gt;The idea is very simple: make each copy unique in a non-visible way.&lt;/p&gt;
+&lt;h2&gt;Credits length&lt;/h2&gt;
+&lt;p&gt;A first approach would be to change the length of the credits: its basic
+duration seems to be &lt;span class="math"&gt;\(t = 88\)&lt;/span&gt; seconds. If you must provide &lt;span class="math"&gt;\(n\)&lt;/span&gt; copies (&lt;span class="math"&gt;\(n\)&lt;/span&gt; odd)
+then distribute copies with
+&lt;/p&gt;
+&lt;div class="math"&gt;$$t - \frac{n}{2000} &amp;lt; t' &amp;lt; t + \frac{n}{2000}$$&lt;/div&gt;
+&lt;p&gt;
+Every copy has credits with a different length: they are a few milliseconds
+shorter or longer than they should be, and by analyzing the file one can know
+for whom it was intended.
+This is obviously easy to defeat: just clip the credits. But it is a first step
+in the right direction.&lt;/p&gt;
+&lt;h2&gt;Scenes length&lt;/h2&gt;
+&lt;p&gt;Next iteration would be to change the length of each scene by a few
+milliseconds. One can count that the first episode holds &lt;span class="math"&gt;\(s = 18\)&lt;/span&gt; scenes. Each
+scene lasts several minutes. Once again each copy can be made shorter or longer
+by a couple milliseconds, providing a unique fingerprint for each version sent.&lt;/p&gt;
+&lt;p&gt;Let's call &lt;span class="math"&gt;\(n\)&lt;/span&gt; the number of recipients and &lt;span class="math"&gt;\(k\)&lt;/span&gt; the difference in milliseconds
+between the shortest and the longest version of a scene (&lt;span class="math"&gt;\(k\)&lt;/span&gt; will be the same
+for all scenes). We want&lt;/p&gt;
+&lt;div class="math"&gt;$$
+    n = s^k \\
+    log(n) = k \times log(s) \\
+    k = \frac{log(n)}{log(s)} \\
+$$&lt;/div&gt;
+&lt;p&gt;Say we have &lt;span class="math"&gt;\(n = 1 000 000\)&lt;/span&gt; (I think that the real number is wayyyy lower).
+Which gives
+&lt;/p&gt;
+&lt;div class="math"&gt;$$ k = \frac{log(1000000)}{log(18)} = 3.96 $$&lt;/div&gt;
+&lt;p&gt;
+You only need 4 versions of each scene, which will be between 2 ms shorter and
+1 ms longer.&lt;/p&gt;
+&lt;p&gt;This, in turn, is difficult to counter for one does not know the expected
+length of each scene.&lt;/p&gt;
+&lt;h2&gt;Constant total length&lt;/h2&gt;
+&lt;p&gt;A small caveat is the fact that the total length may appear a bit off, which
+could tip a leaker. 2 easy solutions come to mind:&lt;/p&gt;
+&lt;h3&gt;Credits compensation&lt;/h3&gt;
+&lt;p&gt;Change the credits length to compensate. In the worst case you'll have to
+make the credits &lt;span class="math"&gt;\(18 \times 2 = 36 ms\)&lt;/span&gt; longer.&lt;/p&gt;
+&lt;h3&gt;Self-compensating offsets&lt;/h3&gt;
+&lt;p&gt;Distribute the changes so all files have the expected length. Let's see (for
+fun) what it gives (suppose &lt;span class="math"&gt;\(k \equiv 2 \pmod 1\)&lt;/span&gt;):&lt;/p&gt;
+&lt;p&gt;Let &lt;span class="math"&gt;\(C_k(s, K) =\)&lt;/span&gt; &lt;span class="math"&gt;\(\#\{(c_i)_{(i ≤ s)} \mid 0 ≤ c_i ≤ k - 1, \sum_{i=1}^s c_i = K\}\)&lt;/span&gt;
+the set of all sequences of &lt;span class="math"&gt;\(s\)&lt;/span&gt; posive elements below &lt;span class="math"&gt;\(k\)&lt;/span&gt; which sum to &lt;span class="math"&gt;\(K\)&lt;/span&gt;.&lt;/p&gt;
+&lt;p&gt;How do we pick &lt;span class="math"&gt;\(K\)&lt;/span&gt;?  We want the sum of the centered &lt;span class="math"&gt;\(c_i\)&lt;/span&gt; to be 0, so
+&lt;/p&gt;
+&lt;div class="math"&gt;$$
+    \sum_{i=1}^s c_i - \frac{k -1}{2} = 0 \\
+    \sum_{i=1}^s c_i = \sum_{i=1}^s \frac{k - 1}{2} \\
+    \sum_{i=1}^s c_i = \frac{k \times (k + 1)}{4} - \frac{s}{2} = K \\
+$$&lt;/div&gt;
+&lt;p&gt;We first pick the offset of the first scene:
+&lt;/p&gt;
+&lt;div class="math"&gt;$$
+    C_k(s, K) = C_k(s - 1, K) + C_k(s - 1, K - 1) + \cdots + C_k(s - 1, K - k + 1) \\
+    C_k(s, K) = \sum_{i=0}^{min(K, k - 1)} C_k(s - 1, K - i) \\
+$$&lt;/div&gt;
+&lt;p&gt;
+And the terminal cases are
+&lt;/p&gt;
+&lt;div class="math"&gt;$$
+    C_k(0, 0) = 1 \\
+    C_k(0, K) = 0 \quad if \, K ≠ 0
+$$&lt;/div&gt;
+&lt;p&gt;With &lt;span class="math"&gt;\(C_k(s, \frac{k \times (k + 1)}{4} - \frac{s}{2}) = n\)&lt;/span&gt; we can get &lt;span class="math"&gt;\(k\)&lt;/span&gt;
+from &lt;span class="math"&gt;\(s\)&lt;/span&gt; and &lt;span class="math"&gt;\(n\)&lt;/span&gt;.
+&lt;!--
+In our case it gives &lt;span class="math"&gt;\(k = XXX\)&lt;/span&gt;. Still really low.
+--&gt;&lt;/p&gt;
+&lt;h2&gt;Further considerations&lt;/h2&gt;
+&lt;p&gt;There is still one way to blur that watermarking scheme: when the leaker has 2
+copies. He can then notice the discrepancies in scenes length. He may decide to
+- average each scene length. There are scene-length encoding schemes that make
+the average of every 2 sequences unique (left as an exercice to the reader ☺)
+and therefore solve this. Same with 3 copies, or 4 copies... but the encoding
+requires a &lt;span class="math"&gt;\(k\)&lt;/span&gt; always higher.
+- take the min or max of every scene. &lt;a href="http://en.wikipedia.org/wiki/Error_detection_and_correction#Error-correcting_code"&gt;Error-correcting codes&lt;/a&gt;
+should help.
+- randomly clip every scene.&lt;/p&gt;
+&lt;p&gt;The case of a leaker getting her hands on 2 copies is however really less
+likely.&lt;/p&gt;
+&lt;p&gt;This makes the afore-presented watermarking scheme resistant while simple to
+implement.&lt;/p&gt;
+&lt;p&gt;Apart from that I think that binge-watching the first 4 episodes is a stupid
+idea that will make you ache for a month waiting for the 5th episode ☺.&lt;/p&gt;
+&lt;p&gt;Thanks for reading.&lt;/p&gt;
+&lt;script type="text/javascript"&gt;if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
+    var align = "center",
+        indent = "0em",
+        linebreak = "false";
+
+    if (false) {
+        align = (screen.width &lt; 768) ? "left" : align;
+        indent = (screen.width &lt; 768) ? "0em" : indent;
+        linebreak = (screen.width &lt; 768) ? 'true' : linebreak;
+    }
+    
+    var mathjaxscript = document.createElement('script');
+    mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
+    mathjaxscript.type = 'text/javascript';
+    mathjaxscript.src = '//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
+    mathjaxscript[(window.opera ? "innerHTML" : "text")] =
+        "MathJax.Hub.Config({" +
+        "    config: ['MMLorHTML.js']," +
+        "    TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'AMS' } }," +
+        "    jax: ['input/TeX','input/MathML','output/HTML-CSS']," +
+        "    extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']," +
+        "    displayAlign: '"+ align +"'," +
+        "    displayIndent: '"+ indent +"'," +
+        "    showMathMenu: true," +
+        "    tex2jax: { " +
+        "        inlineMath: [ ['\\\\(','\\\\)'] ], " +
+        "        displayMath: [ ['$$','$$'] ]," +
+        "        processEscapes: true," +
+        "        preview: 'TeX'," +
+        "    }, " +
+        "    'HTML-CSS': { " +
+        "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'inherit ! important'} }," +
+        "        linebreaks: { automatic: "+ linebreak +", width: '90% container' }," +
+        "    }, " +
+        "}); ";
+    (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
+}
+&lt;/script&gt;</summary><category term="game of thrones"></category><category term="encoding"></category></entry></feed>

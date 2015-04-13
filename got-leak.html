@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>bru's blog</title>
+	<meta name="description" content="">
+	<meta name="author" content="Bruno Cauet">
+
+	<!-- HTML5 shim, for IE6-8 support of HTML elements -->
+	<!--[if lt IE 9]>
+		<script src="http://blog.frite-camembert.net/theme/html5.js"></script>
+	<![endif]-->
+
+	<!-- Styles -->
+	<link href="http://blog.frite-camembert.net/theme/bootstrap.min.css" rel="stylesheet">
+	<link href="http://blog.frite-camembert.net/theme/local.css" rel="stylesheet">
+	<link href="http://blog.frite-camembert.net/theme/pygments.css" rel="stylesheet">
+
+	<!-- Feeds -->
+	<link href="http://blog.frite-camembert.net/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="bru's blog Atom Feed" />
+
+
+
+
+</head>
+<body>
+	<div class="topbar">
+	  <div class="topbar-inner">
+		<div class="container-fluid">
+		  <a class="brand" href="http://blog.frite-camembert.net/">bru's blog</a>
+			<ul class="nav">
+					<li class="active"><a href="http://blog.frite-camembert.net/category/misc.html">Misc</a></li>
+					<li ><a href="http://blog.frite-camembert.net/category/python.html">Python</a></li>
+					<li ><a href="http://blog.frite-camembert.net/category/riddle.html">Riddle</a></li>
+			</ul>
+			<p class="pull-right"><a href="http://blog.frite-camembert.net/archives.html">[archives]</a> <a href="http://blog.frite-camembert.net/tags.html">[tags]</a></p>
+		</div>
+	  </div>
+	</div>
+
+	<div class="container-fluid">
+	  <div class="sidebar">
+		<div class="well">
+			<h3>Blogroll</h3>
+			<ul>
+			</ul>
+			<div class="social">
+			<h3>Social</h3>
+			<ul>
+				<li><a href="https://github.com/brunal">(sparse) github</a></li>
+				<li><a href="https://www.facebook.com/bcauet">facebook</a></li>
+			</ul>
+			</div>
+		</div>
+	  </div>
+	  <div class="content">
+	<div class='article'>
+		<div class="page-header"><h1>Game of Thrones leak and watermark: a stupid tracking system</h1></div>
+		<div class="well small">Permalink: <a class="more" href="http://blog.frite-camembert.net/got-leak.html">2015-04-13 00:00:00+02:00</a>
+by <a class="url fn" href="http://blog.frite-camembert.net/author/bruno-cauet.html">Bruno Cauet </a>
+ in <a href="http://blog.frite-camembert.net/category/misc.html">Misc</a>
+tags: <a href="http://blog.frite-camembert.net/tag/game-of-thrones.html">game of thrones</a> <a href="http://blog.frite-camembert.net/tag/encoding.html">encoding</a> </div>
+		<div><p><a href="http://torrentfreak.com/first-episodes-of-game-of-thrones-season-5-leak-online-150412/">The first four episodes of game of thrones
+leaked</a>
+nearly 36 hours ago. They've extensively downloaded, and the only tracking HBO
+seemed to be a watermark in the bottom left corner of the screen. Once blurred,
+it is useless. This impresses me. It's 2015 and all you're using is a "confirm
+you're deleted" + "your copy is watermarked" for protection? There are simple
+schemes that would have allowed HBO to track the leak.</p>
+<p>The idea is very simple: make each copy unique in a non-visible way.</p>
+<h2>Credits length</h2>
+<p>A first approach would be to change the length of the credits: its basic
+duration seems to be <span class="math">\(t = 88\)</span> seconds. If you must provide <span class="math">\(n\)</span> copies (<span class="math">\(n\)</span> odd)
+then distribute copies with
+</p>
+<div class="math">$$t - \frac{n}{2000} &lt; t' &lt; t + \frac{n}{2000}$$</div>
+<p>
+Every copy has credits with a different length: they are a few milliseconds
+shorter or longer than they should be, and by analyzing the file one can know
+for whom it was intended.
+This is obviously easy to defeat: just clip the credits. But it is a first step
+in the right direction.</p>
+<h2>Scenes length</h2>
+<p>Next iteration would be to change the length of each scene by a few
+milliseconds. One can count that the first episode holds <span class="math">\(s = 18\)</span> scenes. Each
+scene lasts several minutes. Once again each copy can be made shorter or longer
+by a couple milliseconds, providing a unique fingerprint for each version sent.</p>
+<p>Let's call <span class="math">\(n\)</span> the number of recipients and <span class="math">\(k\)</span> the difference in milliseconds
+between the shortest and the longest version of a scene (<span class="math">\(k\)</span> will be the same
+for all scenes). We want</p>
+<div class="math">$$
+    n = s^k \\
+    log(n) = k \times log(s) \\
+    k = \frac{log(n)}{log(s)} \\
+$$</div>
+<p>Say we have <span class="math">\(n = 1 000 000\)</span> (I think that the real number is wayyyy lower).
+Which gives
+</p>
+<div class="math">$$ k = \frac{log(1000000)}{log(18)} = 3.96 $$</div>
+<p>
+You only need 4 versions of each scene, which will be between 2 ms shorter and
+1 ms longer.</p>
+<p>This, in turn, is difficult to counter for one does not know the expected
+length of each scene.</p>
+<h2>Constant total length</h2>
+<p>A small caveat is the fact that the total length may appear a bit off, which
+could tip a leaker. 2 easy solutions come to mind:</p>
+<h3>Credits compensation</h3>
+<p>Change the credits length to compensate. In the worst case you'll have to
+make the credits <span class="math">\(18 \times 2 = 36 ms\)</span> longer.</p>
+<h3>Self-compensating offsets</h3>
+<p>Distribute the changes so all files have the expected length. Let's see (for
+fun) what it gives (suppose <span class="math">\(k \equiv 2 \pmod 1\)</span>):</p>
+<p>Let <span class="math">\(C_k(s, K) =\)</span> <span class="math">\(\#\{(c_i)_{(i ≤ s)} \mid 0 ≤ c_i ≤ k - 1, \sum_{i=1}^s c_i = K\}\)</span>
+the set of all sequences of <span class="math">\(s\)</span> posive elements below <span class="math">\(k\)</span> which sum to <span class="math">\(K\)</span>.</p>
+<p>How do we pick <span class="math">\(K\)</span>?  We want the sum of the centered <span class="math">\(c_i\)</span> to be 0, so
+</p>
+<div class="math">$$
+    \sum_{i=1}^s c_i - \frac{k -1}{2} = 0 \\
+    \sum_{i=1}^s c_i = \sum_{i=1}^s \frac{k - 1}{2} \\
+    \sum_{i=1}^s c_i = \frac{k \times (k + 1)}{4} - \frac{s}{2} = K \\
+$$</div>
+<p>We first pick the offset of the first scene:
+</p>
+<div class="math">$$
+    C_k(s, K) = C_k(s - 1, K) + C_k(s - 1, K - 1) + \cdots + C_k(s - 1, K - k + 1) \\
+    C_k(s, K) = \sum_{i=0}^{min(K, k - 1)} C_k(s - 1, K - i) \\
+$$</div>
+<p>
+And the terminal cases are
+</p>
+<div class="math">$$
+    C_k(0, 0) = 1 \\
+    C_k(0, K) = 0 \quad if \, K ≠ 0
+$$</div>
+<p>With <span class="math">\(C_k(s, \frac{k \times (k + 1)}{4} - \frac{s}{2}) = n\)</span> we can get <span class="math">\(k\)</span>
+from <span class="math">\(s\)</span> and <span class="math">\(n\)</span>.
+<!--
+In our case it gives <span class="math">\(k = XXX\)</span>. Still really low.
+--></p>
+<h2>Further considerations</h2>
+<p>There is still one way to blur that watermarking scheme: when the leaker has 2
+copies. He can then notice the discrepancies in scenes length. He may decide to
+- average each scene length. There are scene-length encoding schemes that make
+the average of every 2 sequences unique (left as an exercice to the reader ☺)
+and therefore solve this. Same with 3 copies, or 4 copies... but the encoding
+requires a <span class="math">\(k\)</span> always higher.
+- take the min or max of every scene. <a href="http://en.wikipedia.org/wiki/Error_detection_and_correction#Error-correcting_code">Error-correcting codes</a>
+should help.
+- randomly clip every scene.</p>
+<p>The case of a leaker getting her hands on 2 copies is however really less
+likely.</p>
+<p>This makes the afore-presented watermarking scheme resistant while simple to
+implement.</p>
+<p>Apart from that I think that binge-watching the first 4 episodes is a stupid
+idea that will make you ache for a month waiting for the 5th episode ☺.</p>
+<p>Thanks for reading.</p>
+<script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
+    var align = "center",
+        indent = "0em",
+        linebreak = "false";
+
+    if (false) {
+        align = (screen.width < 768) ? "left" : align;
+        indent = (screen.width < 768) ? "0em" : indent;
+        linebreak = (screen.width < 768) ? 'true' : linebreak;
+    }
+    
+    var mathjaxscript = document.createElement('script');
+    mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
+    mathjaxscript.type = 'text/javascript';
+    mathjaxscript.src = '//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
+    mathjaxscript[(window.opera ? "innerHTML" : "text")] =
+        "MathJax.Hub.Config({" +
+        "    config: ['MMLorHTML.js']," +
+        "    TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'AMS' } }," +
+        "    jax: ['input/TeX','input/MathML','output/HTML-CSS']," +
+        "    extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']," +
+        "    displayAlign: '"+ align +"'," +
+        "    displayIndent: '"+ indent +"'," +
+        "    showMathMenu: true," +
+        "    tex2jax: { " +
+        "        inlineMath: [ ['\\\\(','\\\\)'] ], " +
+        "        displayMath: [ ['$$','$$'] ]," +
+        "        processEscapes: true," +
+        "        preview: 'TeX'," +
+        "    }, " +
+        "    'HTML-CSS': { " +
+        "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'inherit ! important'} }," +
+        "        linebreaks: { automatic: "+ linebreak +", width: '90% container' }," +
+        "    }, " +
+        "}); ";
+    (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
+}
+</script></div>
+	</div>
+		<footer>
+		  <p>Powered by <a href="http://getpelican.com/">Pelican</a>. Theme based on <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap</a>.</p>
+		  <p>&copy; Bruno Cauet</p>
+		</footer>
+	  </div>
+
+	</div>
+</body>
+</html>
