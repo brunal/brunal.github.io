@@ -17,6 +17,9 @@ for the first episode is &lt;span class="math"&gt;\(t = 88\)&lt;/span&gt; second
 Every copy has credits with a different length: they are a few milliseconds
 shorter or longer than they should be, and by analyzing the file one can know
 for whom it was intended.&lt;/p&gt;
+&lt;p&gt;Edit: a millisecond cannot be the base step: a frame is. If one frame lasts
+about 40 milliseconds, this makes the offsets 40 times bigger but still
+neglectable. This applies to the rest of this post.&lt;/p&gt;
 &lt;p&gt;This is obviously easy to defeat: just clip the credits. But it is a first step
 in the right direction.&lt;/p&gt;
 &lt;h2&gt;Scenes length&lt;/h2&gt;
@@ -92,6 +95,14 @@ should help.&lt;/li&gt;
 &lt;p&gt;The case of a leaker getting her hands on 2 copies is however highly unlikely.&lt;/p&gt;
 &lt;p&gt;This makes the afore-presented watermarking scheme resistant while simple to
 implement.&lt;/p&gt;
+&lt;p&gt;This post raised some &lt;a href="https://news.ycombinator.com/item?id=9367483"&gt;interesting discussion on Hacker
+News&lt;/a&gt; (which was one original
+goal, since I was looking for discussion of that topic and failed to find any
+on the Internet). Several commenters raised the point of stenography: an
+invisible message can be encoded in the video or the audio and be
+transcoding-resistant. Some resources: &lt;a href="http://ieeexplore.ieee.org/xpls/abs_all.jsp?arnumber=5978601"&gt;1&lt;/a&gt;
+&lt;a href="http://www.steganosaur.us/dissertation/resources/6-final-report"&gt;2&lt;/a&gt;
+&lt;a href="http://en.wikipedia.org/wiki/Cinavia"&gt;3&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;Apart from that I think that binge-watching the first 4 episodes is a stupid
 idea that will make you ache for a month waiting for the 5th episode ☺.&lt;/p&gt;
 &lt;p&gt;Thanks for reading.&lt;/p&gt;
